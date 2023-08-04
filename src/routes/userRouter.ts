@@ -8,12 +8,12 @@ const router = express.Router();
 router.get('/users', userController.listUsers);
 
 //Cadastrar usuario
-//router.post('/users', userController.createUser);
+router.post('/users', userController.createUser);
     
 //Editar usuario
-//router.put('/user/:id', userController.editUser);
+router.put('/user/:id', userController.editUser);
    
 
-//router.delete('/user/:id', userController.deleteUser);
+router.delete('/user/:id', userController.deleteUser);
 
 export default router;

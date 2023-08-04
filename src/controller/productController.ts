@@ -1,8 +1,8 @@
 import {Request, Response} from 'express';
 import db from '../config/database';
 
-async function listUsers(req: Request, res: Response) {
-   db.connection.query('select * from clients_ecommerce', (err, results)=> {
+async function listProducts(req: Request, res: Response) {
+   db.connection.query('select * from products', (err, results)=> {
         console.log(results);
         if(err){
             res.json({
@@ -19,32 +19,36 @@ async function listUsers(req: Request, res: Response) {
 };
 
 
-async function createUser(req: Request, res: Response) {
-    const querySql = 'insert into clients_ecommerce(ds_name, nm_cpf, fl_status) VALUES(?,?,?);';
+async function createProduct(req: Request, res: Response) {
+    const querySql = 'insert into products(ds_name, ds_description, nm_value, ds_brand, ds_status) VALUES(?,?,?,?,?);';
     const params = Array(
         req.body.ds_name,
-        req.body.nm_cpf,
-        req.body.fl_status
+        req.body.ds_description,
+        req.body.nm_value,
+        req.body.ds_brand,
+        req.body.ds_status
     );
 
     db.connection.query(querySql, params, (err, results) => {
         res.json({
             success: true,
-            message: 'Cadastro realizado com sucesso',
+            message: 'Cadastro de produto realizado com sucesso',
             data: results
         });
     }
 )};
 
-async function editUser(req: Request, res: Response) {
-    const idUser = req.params.id;
+async function editProduct(req: Request, res: Response) {
+    const idProduct = req.params.id;
 
-    const querySql = 'update clients_ecommerce set ds_name = ?, nm_cpf = ?, fl_status = ? where id_client = ?';
+    const querySql = 'update products set ds_name = ?, ds_description = ?, nm_value = ?, ds_brand = ?, ds_status = ? where id_product = ?';
     const params = Array(
         req.body.ds_name,
-        req.body.nm_cpf,
-        req.body.fl_status,
-        idUser
+        req.body.ds_description,
+        req.body.nm_value,
+        req.body.ds_brand,
+        req.body.ds_status,
+        idProduct
     );
     db.connection.query(querySql, params, (err, results) => {
         res.json({
@@ -56,10 +60,10 @@ async function editUser(req: Request, res: Response) {
 };
 
 
-async function deleteUser(req: Request, res: Response) {
+async function deleteProduct(req: Request, res: Response) {
     const idUser = req.params.id;
 
-    const querySql = 'delete from clients_ecommerce where id_client = ?';
+    const querySql = 'delete from products where id_product = ?';
     
     db.connection.query(querySql, [idUser], (err, results) => {
         res.json({
@@ -69,8 +73,8 @@ async function deleteUser(req: Request, res: Response) {
 };
 
 export default {
-    listUsers,
-    createUser,
-    editUser,
-    deleteUser
+    listProducts,
+    createProduct,
+    editProduct,
+    deleteProduct
 };
